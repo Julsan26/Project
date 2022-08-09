@@ -1,0 +1,5 @@
+package routes
+
+func GetCarsByID(w http.ResponseWriter, r *http.Request) {
+	return
+}
