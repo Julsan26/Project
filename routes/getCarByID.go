@@ -1,13 +1,11 @@
 package routes
 
-import (
-	"net/http"
-)
+import "net/http"
 
 // Get all Cars
 
 // response and request handlers
-func GetAllCars(w http.ResponseWriter, r *http.Request) {
+func GetCarsByID(w http.ResponseWriter, r *http.Request) {
 
 	// db := database.SetupDB()
 
@@ -41,8 +39,3 @@ func GetAllCars(w http.ResponseWriter, r *http.Request) {
 }
 
 // Function for handling errors
-func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
-}

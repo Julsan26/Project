@@ -17,7 +17,7 @@ func main() {
 	// Route handles & endpoints
 
 	// Get all Cars
-	router.HandleFunc("/cars", routes.GetCars).Methods("GET")
+	router.HandleFunc("/cars", routes.GetAllCars).Methods("GET")
 
 	// Get a Car by ID
 	router.HandleFunc("/cars/{id}", routes.GetCarsByID).Methods("GET")
