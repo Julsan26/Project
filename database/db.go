@@ -8,7 +8,7 @@ import (
 )
 
 // DB set up
-func setupDB() *sql.DB {
+func SetupDB() *sql.DB {
 	host := os.Getenv("HOST")
 	dbPort := os.Getenv("DBPORT")
 	user := os.Getenv("USER")

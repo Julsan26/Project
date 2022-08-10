@@ -11,3 +11,9 @@ type Car struct {
 	Price    string `json:"Price"`
 	ID       string `json:"ID"`
 }
+
+type JsonResponse struct {
+	Type    string `json:"type"`
+	Data    []Car  `json:"data"`
+	Message string `json:"message"`
+}
