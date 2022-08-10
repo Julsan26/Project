@@ -1,12 +1,7 @@
 package routes
 
 import (
-	"database/sql"
-	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
-	"os"
 )
 
 // Get all Cars
@@ -14,41 +9,40 @@ import (
 // response and request handlers
 func GetCars(w http.ResponseWriter, r *http.Request) {
 
-    db := database.setupDB()
+	// db := database.SetupDB()
 
+	// // Get all cars from cars "
+	// rows, err := db.Query("SELECT * FROM cars")
 
-	// Get all movies from movies table that don't have movieID = "1"
-	rows, err := db.Query("SELECT * FROM movies")
+	// // check errors
+	// checkErr(err)
 
-	// check errors
-	checkErr(err)
+	// // var response []JsonResponse
+	// var cars []request.Car
 
-	// var response []JsonResponse
-	var cars []
+	// // Foreach movie
+	// for rows.Next() {
+	// 	var id int
+	// 	var movieID string
+	// 	var movieName string
 
-	// Foreach movie
-	for rows.Next() {
-		var id int
-		var movieID string
-		var movieName string
+	// 	err = rows.Scan(&id, &movieID, &movieName)
 
-		err = rows.Scan(&id, &movieID, &movieName)
+	// 	// check errors
+	// 	checkErr(err)
 
-		// check errors
-		checkErr(err)
+	// 	movies = append(movies, Movie{MovieID: movieID, MovieName: movieName})
+	// }
 
-		movies = append(movies, Movie{MovieID: movieID, MovieName: movieName})
-	}
+	// var response = JsonResponse{Type: "success", Data: movies}
 
-	var response = JsonResponse{Type: "success", Data: movies}
-
-	json.NewEncoder(w).Encode(response)
+	// json.NewEncoder(w).Encode(response)
+	return
 }
-
 
 // Function for handling errors
 func checkErr(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
