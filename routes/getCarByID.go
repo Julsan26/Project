@@ -3,27 +3,24 @@ package routes
 import (
 	"encoding/json"
 	"github.com/Julsan26/Project/database"
-	"github.com/Julsan26/Project/model"
+	mod "github.com/Julsan26/Project/model"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"strconv"
 )
 
-const (
-	query = "SELECT id,Make, Model,Package,Color,Year,Category,Mileage,Price FROM cars WHERE id=?;"
-)
-
 // response and model handlers
 func GetCarsByID(w http.ResponseWriter, r *http.Request) {
-	var car model.Car
+	var car mod.Car
 
-	var dbid int64
+	var dbID int64
 	var Make string
 	var model string
 	var Package string
 	var color string
 	var year string
-	var catagory string
+	var category string
 	var mileage string
 	var price string
 
@@ -34,18 +31,21 @@ func GetCarsByID(w http.ResponseWriter, r *http.Request) {
 	db := database.SetupDB()
 
 	row := db.QueryRow(sqlStatement, newID)
-	err := row.Scan(&dbid, &Make, &model, &Package, &color, &year, &mileage, &price)
+	err := row.Scan(&dbID, &Make, &model, &Package, &color, &year, &mileage, &price)
 	if err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Println(err.Error())
+		_ = json.NewEncoder(w).Encode(err.Error())
+		return
 	}
-	car = model.Car{
-		ID:       dbid,
+	car = mod.Car{
+		ID:       dbID,
 		Make:     Make,
 		Model:    model,
 		Package:  Package,
 		Color:    color,
 		Year:     year,
-		Catagory: catagory,
+		Category: category,
 		Mileage:  mileage,
 		Price:    price,
 	}

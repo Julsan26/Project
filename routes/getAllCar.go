@@ -3,7 +3,8 @@ package routes
 import (
 	"encoding/json"
 	"github.com/Julsan26/Project/database"
-	"github.com/Julsan26/Project/model"
+	mod "github.com/Julsan26/Project/model"
+	"log"
 	"net/http"
 )
 
@@ -19,10 +20,12 @@ func GetAllCars(w http.ResponseWriter, r *http.Request) {
 	// Get all cars from cars table
 	rows, err := db.Query("SELECT * FROM cars")
 	if err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		_ = json.NewEncoder(w).Encode(err.Error())
+		log.Println(err.Error())
 	}
 
-	var cars []model.Car
+	var cars []mod.Car
 
 	// Foreach car
 	for rows.Next() {
@@ -38,17 +41,20 @@ func GetAllCars(w http.ResponseWriter, r *http.Request) {
 
 		err = rows.Scan(&id, &make, &model, &Package, &color, &year, &catagory, &mileage, &price)
 		if err != nil {
-			panic(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			_ = json.NewEncoder(w).Encode(err.Error())
+			log.Println(err.Error())
+			return
 		}
 
-		cars = append(cars, model.Car{
+		cars = append(cars, mod.Car{
 			ID:       id,
 			Make:     make,
 			Model:    model,
 			Package:  Package,
 			Color:    color,
 			Year:     year,
-			Catagory: catagory,
+			Category: catagory,
 			Mileage:  mileage,
 			Price:    price,
 		})
