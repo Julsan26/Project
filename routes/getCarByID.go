@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-// response and model handlers
+// GetCarsByID will Get Cars from the database based on id from the request.
 func GetCarsByID(w http.ResponseWriter, r *http.Request) {
 	var car mod.Car
 

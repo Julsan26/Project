@@ -10,7 +10,7 @@ import (
 
 // Get all Cars
 
-// response and model handlers
+// GetAllCars gets all the car from the Database.
 func GetAllCars(w http.ResponseWriter, r *http.Request) {
 
 	db := database.SetupDB()
