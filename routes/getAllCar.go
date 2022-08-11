@@ -1,6 +1,9 @@
 package routes
 
 import (
+	"encoding/json"
+	"github.com/Julsan26/Project/database"
+	"github.com/Julsan26/Project/request"
 	"net/http"
 )
 
@@ -9,34 +12,49 @@ import (
 // response and request handlers
 func GetAllCars(w http.ResponseWriter, r *http.Request) {
 
-	// db := database.SetupDB()
+	db := database.SetupDB()
 
-	// // Get all cars from cars "
-	// rows, err := db.Query("SELECT * FROM cars")
+	printMessage("Getting cars...")
 
-	// // check errors
-	// checkErr(err)
+	// Get all movies from movies table that don't have movieID = "1"
+	rows, err := db.Query("SELECT * FROM cars")
 
-	// // var response []JsonResponse
-	// var cars []request.Car
+	// check errors
+	checkErr(err)
 
-	// // Foreach movie
-	// for rows.Next() {
-	// 	var id int
-	// 	var movieID string
-	// 	var movieName string
+	// var response []JsonResponse
+	var cars []request.Car
 
-	// 	err = rows.Scan(&id, &movieID, &movieName)
+	// Foreach movie
+	for rows.Next() {
+		var id int64
+		var make string
+		var model string
+		var Package string
+		var color string
+		var year string
+		var catagory string
+		var mileage string
+		var price string
 
-	// 	// check errors
-	// 	checkErr(err)
+		err = rows.Scan(&id, &make, &model, &Package, &color, &year, &catagory, &mileage, &price)
+		checkErr(err)
 
-	// 	movies = append(movies, Movie{MovieID: movieID, MovieName: movieName})
-	// }
+		cars = append(cars, request.Car{
+			ID:       id,
+			Make:     make,
+			Model:    model,
+			Package:  Package,
+			Color:    color,
+			Year:     year,
+			Catagory: catagory,
+			Mileage:  mileage,
+			Price:    price,
+		})
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(cars)
 
-	// var response = JsonResponse{Type: "success", Data: movies}
-
-	// json.NewEncoder(w).Encode(response)
 	return
 }
 

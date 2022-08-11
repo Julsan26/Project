@@ -9,7 +9,7 @@ type Car struct {
 	Catagory string `json:"Catagory"`
 	Mileage  string `json:"Mileage"`
 	Price    string `json:"Price"`
-	ID       string `json:"ID"`
+	ID       int64  `json:"ID"`
 }
 
 type JsonResponse struct {

@@ -1,41 +1,58 @@
 package routes
 
-import "net/http"
+import (
+	"encoding/json"
+	"github.com/Julsan26/Project/database"
+	"github.com/Julsan26/Project/request"
+	"github.com/gorilla/mux"
+	"net/http"
+	"strconv"
+)
 
-// Get all Cars
+const (
+	query = "SELECT id,Make, Model,Package,Color,Year,Category,Mileage,Price FROM cars WHERE id=?;"
+)
 
 // response and request handlers
 func GetCarsByID(w http.ResponseWriter, r *http.Request) {
+	var car request.Car
 
-	// db := database.SetupDB()
+	var dbid int64
+	var Make string
+	var model string
+	var Package string
+	var color string
+	var year string
+	var catagory string
+	var mileage string
+	var price string
 
-	// // Get all cars from cars "
-	// rows, err := db.Query("SELECT * FROM cars")
+	vars := mux.Vars(r)
+	id := vars["id"]
+	newID, _ := strconv.ParseInt(id, 10, 64)
+	sqlStatement := `SELECT id,make,model,package,color,year,mileage,price FROM cars WHERE id=$1;`
+	db := database.SetupDB()
 
-	// // check errors
-	// checkErr(err)
+	row := db.QueryRow(sqlStatement, newID)
+	err := row.Scan(&dbid, &Make, &model, &Package, &color, &year, &mileage, &price)
+	if err != nil {
+		return
+	}
 
-	// // var response []JsonResponse
-	// var cars []request.Car
+	car = request.Car{
+		ID:       dbid,
+		Make:     Make,
+		Model:    model,
+		Package:  Package,
+		Color:    color,
+		Year:     year,
+		Catagory: catagory,
+		Mileage:  mileage,
+		Price:    price,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(car)
 
-	// // Foreach movie
-	// for rows.Next() {
-	// 	var id int
-	// 	var movieID string
-	// 	var movieName string
-
-	// 	err = rows.Scan(&id, &movieID, &movieName)
-
-	// 	// check errors
-	// 	checkErr(err)
-
-	// 	movies = append(movies, Movie{MovieID: movieID, MovieName: movieName})
-	// }
-
-	// var response = JsonResponse{Type: "success", Data: movies}
-
-	// json.NewEncoder(w).Encode(response)
-	return
 }
 
 // Function for handling errors
