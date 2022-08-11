@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/Julsan26/Project/request"
+	"github.com/Julsan26/Project/model"
 	"io/ioutil"
 	"net/http"
 )
@@ -19,7 +19,7 @@ const (
 )
 
 func CreateCar(w http.ResponseWriter, r *http.Request) {
-	var car request.Car
+	var car model.Car
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return
@@ -37,16 +37,17 @@ func CreateCar(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	printMessage("Inserting movie into DB")
+	printMessage("Inserting car into DB")
 
 	var lastInsertID int
-	errs := db.QueryRow("INSERT INTO cars(id ,Make, Model,Package,Color,Year,Category,Mileage,Price) VALUES($1, $2,$3,$4,$5,$6,$7,$8,$9) returning id;", car.ID, car.Make, car.Model, car.Package, car.Color, car.Year, car.Catagory, car.Mileage, car.Price).Scan(&lastInsertID)
+	errs := db.QueryRow("INSERT INTO cars(id ,Make, Model,Package,Color,Year,Category,Mileage,Price) VALUES($1, $2,$3,$4,$5,$6,$7,$8,$9) returning id;", car.ID, car.Make, car.Model, car.Package, car.Color, car.Year, car.Category, car.Mileage, car.Price).Scan(&lastInsertID)
 	if err == nil {
 		printMessage("Database is sucesfully updated")
 
 	}
-	checkErr(errs)
-
+	if errs != nil {
+		panic(err)
+	}
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(r)

@@ -3,29 +3,28 @@ package routes
 import (
 	"encoding/json"
 	"github.com/Julsan26/Project/database"
-	"github.com/Julsan26/Project/request"
+	"github.com/Julsan26/Project/model"
 	"net/http"
 )
 
 // Get all Cars
 
-// response and request handlers
+// response and model handlers
 func GetAllCars(w http.ResponseWriter, r *http.Request) {
 
 	db := database.SetupDB()
 
 	printMessage("Getting cars...")
 
-	// Get all movies from movies table that don't have movieID = "1"
+	// Get all cars from cars table
 	rows, err := db.Query("SELECT * FROM cars")
+	if err != nil {
+		panic(err)
+	}
 
-	// check errors
-	checkErr(err)
+	var cars []model.Car
 
-	// var response []JsonResponse
-	var cars []request.Car
-
-	// Foreach movie
+	// Foreach car
 	for rows.Next() {
 		var id int64
 		var make string
@@ -38,9 +37,11 @@ func GetAllCars(w http.ResponseWriter, r *http.Request) {
 		var price string
 
 		err = rows.Scan(&id, &make, &model, &Package, &color, &year, &catagory, &mileage, &price)
-		checkErr(err)
+		if err != nil {
+			panic(err)
+		}
 
-		cars = append(cars, request.Car{
+		cars = append(cars, model.Car{
 			ID:       id,
 			Make:     make,
 			Model:    model,
@@ -56,11 +57,4 @@ func GetAllCars(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(cars)
 
 	return
-}
-
-// Function for handling errors
-func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
 }

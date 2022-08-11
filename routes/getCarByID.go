@@ -3,7 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"github.com/Julsan26/Project/database"
-	"github.com/Julsan26/Project/request"
+	"github.com/Julsan26/Project/model"
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
@@ -13,9 +13,9 @@ const (
 	query = "SELECT id,Make, Model,Package,Color,Year,Category,Mileage,Price FROM cars WHERE id=?;"
 )
 
-// response and request handlers
+// response and model handlers
 func GetCarsByID(w http.ResponseWriter, r *http.Request) {
-	var car request.Car
+	var car model.Car
 
 	var dbid int64
 	var Make string
@@ -36,10 +36,9 @@ func GetCarsByID(w http.ResponseWriter, r *http.Request) {
 	row := db.QueryRow(sqlStatement, newID)
 	err := row.Scan(&dbid, &Make, &model, &Package, &color, &year, &mileage, &price)
 	if err != nil {
-		return
+		panic(err)
 	}
-
-	car = request.Car{
+	car = model.Car{
 		ID:       dbid,
 		Make:     Make,
 		Model:    model,
@@ -54,5 +53,3 @@ func GetCarsByID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(car)
 
 }
-
-// Function for handling errors

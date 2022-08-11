@@ -1,4 +1,4 @@
-package request
+package model
 
 type Car struct {
 	Make     string `json:"Make"`
@@ -6,14 +6,8 @@ type Car struct {
 	Package  string `json:"Package"`
 	Color    string `json:"Color"`
 	Year     string `json:"Year"`
-	Catagory string `json:"Catagory"`
+	Category string `json:"Category"`
 	Mileage  string `json:"Mileage"`
 	Price    string `json:"Price"`
 	ID       int64  `json:"ID"`
-}
-
-type JsonResponse struct {
-	Type    string `json:"type"`
-	Data    []Car  `json:"data"`
-	Message string `json:"message"`
 }

@@ -21,13 +21,13 @@ func main() {
 	// Route handles & endpoints
 
 	// Get all Cars
-	router.HandleFunc("/cars", routes.GetAllCars).Methods("GET")
+	router.HandleFunc("/cars", routes.GetAllCars).Methods(http.MethodGet)
 
 	// Get a Car by ID
-	router.HandleFunc("/cars/{id}", routes.GetCarsByID).Methods("GET")
+	router.HandleFunc("/cars/{id}", routes.GetCarsByID).Methods(http.MethodGet)
 
 	// Create a Car
-	router.HandleFunc("/cars/{id}", routes.CreateCar).Methods("POST")
+	router.HandleFunc("/cars/{id}", routes.CreateCar).Methods(http.MethodPost)
 
 	// serve the app
 	fmt.Println("Server at 8080")
